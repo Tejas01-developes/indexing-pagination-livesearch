@@ -1,8 +1,11 @@
 import { db } from "../dbconnection/dbconnection.js"
 
+
+   
 export const getdata=async(req,resp)=>{
-    const page=parseInt(req.query.page) || 1;
-    const limit=parseInt(req.query.limit) || 10;
+    const page=parseInt(req.query.page);
+    const limit=parseInt(req.query.limit);
+  
     const offset=(page-1)*limit
     db.query(
         'SELECT * FROM iterms LIMIT ? OFFSET ?',
@@ -11,7 +14,29 @@ export const getdata=async(req,resp)=>{
             if(err){
                 return resp.status(400).json({success:false,message:"not getting data"})
             }
-            return resp.json({page,limit,data:res})
+            return resp.json({success:true,data:res})
         } 
     )
 }
+
+
+
+
+
+
+// this function is for the pagination:-
+// export const getdata=async(req,resp)=>{
+//     const page=parseInt(req.query.page) || 1;
+//     const limit=parseInt(req.query.limit) || 10;
+//     const offset=(page-1)*limit
+//     db.query(
+//         'SELECT * FROM iterms LIMIT ? OFFSET ?',
+//         [limit,offset],
+//         (err,res)=>{
+//             if(err){
+//                 return resp.status(400).json({success:false,message:"not getting data"})
+//             }
+//             return resp.json({page,limit,data:res})
+//         } 
+//     )
+// }
