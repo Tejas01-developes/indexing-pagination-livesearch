@@ -20,23 +20,22 @@ export const getdata=async(req,resp)=>{
 }
 
 
+export const livesearch=(req,resp)=>{
+const{search}=req.body;
+if(!search){
+    return resp.status(400).json({success:false,message:"no search iterm in bar"})
+}
+db.query(
+    'select * from iterms where match(name) against(? in boolean mode)',
+    [`${search}*`],
+    (err,res)=>{
+        if(err){
+            return resp.status(400).json({success:false,message:"db search error"})
+        }
+    return resp.status(200).json({success:true,message:"here is your iterm","data":res})
+    }
+)
+}
 
 
 
-
-// this function is for the pagination:-
-// export const getdata=async(req,resp)=>{
-//     const page=parseInt(req.query.page) || 1;
-//     const limit=parseInt(req.query.limit) || 10;
-//     const offset=(page-1)*limit
-//     db.query(
-//         'SELECT * FROM iterms LIMIT ? OFFSET ?',
-//         [limit,offset],
-//         (err,res)=>{
-//             if(err){
-//                 return resp.status(400).json({success:false,message:"not getting data"})
-//             }
-//             return resp.json({page,limit,data:res})
-//         } 
-//     )
-// }
